@@ -1,227 +1,253 @@
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube start
-😄  minikube v1.38.1 on Ubuntu 24.04
-✨  Using the docker driver based on existing profile
-💨  For improved Docker performance, enable the overlay Linux kernel module using 'modprobe overlay'
-👍  Starting "minikube" primary control-plane node in "minikube" cluster
-🚜  Pulling base image v0.0.50 ...
-🔄  Restarting existing docker container for "minikube" ...
-🐳  Preparing Kubernetes v1.35.1 on Docker 29.2.1 ...
-🔎  Verifying Kubernetes components...
-    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-🌟  Enabled addons: storage-provisioner, default-storageclass
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube docker-env
-export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="tcp://127.0.0.1:33027"
-export DOCKER_CERT_PATH="/home/krishna-nand/.minikube/certs"
-export MINIKUBE_ACTIVE_DOCKERD="minikube"
+# 🚀 Spring Boot Application Deployment on Minikube
 
-# To point your shell to minikube's docker-daemon, run:
-# eval $(minikube -p minikube docker-env)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube -p minikube docker-env
-export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="tcp://127.0.0.1:33027"
-export DOCKER_CERT_PATH="/home/krishna-nand/.minikube/certs"
-export MINIKUBE_ACTIVE_DOCKERD="minikube"
+## 📋 Prerequisites
 
-# To point your shell to minikube's docker-daemon, run:
-# eval $(minikube -p minikube docker-env)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ eval $(minikube -p minikube docker-env)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube docker-env
-export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="tcp://127.0.0.1:33027"
-export DOCKER_CERT_PATH="/home/krishna-nand/.minikube/certs"
-export MINIKUBE_ACTIVE_DOCKERD="minikube"
+Ensure the following tools are installed:
 
-# To point your shell to minikube's docker-daemon, run:
-# eval $(minikube -p minikube docker-env)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ eval $(minikube -p minikube docker-env)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ docker images
-REPOSITORY                                TAG       IMAGE ID       CREATED         SIZE
-registry.k8s.io/kube-apiserver            v1.35.1   6f9eeb0cff98   4 months ago    89.8MB
-registry.k8s.io/kube-scheduler            v1.35.1   5f2a969bc7a4   4 months ago    51.7MB
-registry.k8s.io/kube-proxy                v1.35.1   6521110cdb01   4 months ago    70.4MB
-registry.k8s.io/kube-controller-manager   v1.35.1   8d7002962c48   4 months ago    75.8MB
-registry.k8s.io/etcd                      3.6.6-0   0a108f718956   7 months ago    62.5MB
-registry.k8s.io/coredns/coredns           v1.13.1   aa5e3ebc0dfe   8 months ago    78.1MB
-registry.k8s.io/pause                     3.10.1    cd073f4c5f6a   12 months ago   736kB
-gcr.io/k8s-minikube/storage-provisioner   v5        6e38f40d628d   5 years ago     31.5MB
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ docker build -t springboot-k8s-demo:1.0 .
-[+] Building 33.3s (7/7) FINISHED                                                                                                                               docker:default
- => [internal] load build definition from Dockerfile                                                                                                                      0.1s
- => => transferring dockerfile: 190B                                                                                                                                      0.0s
- => WARN: ConsistentInstructionCasing: Command 'Add' should match the case of the command majority (uppercase) (line 3)                                                   0.1s
- => [internal] load metadata for docker.io/library/eclipse-temurin:17-jdk                                                                                                 4.0s
- => [internal] load .dockerignore                                                                                                                                         0.1s
- => => transferring context: 2B                                                                                                                                           0.0s
- => [internal] load build context                                                                                                                                         1.5s
- => => transferring context: 21.09MB                                                                                                                                      1.5s
- => [1/2] FROM docker.io/library/eclipse-temurin:17-jdk@sha256:859dc576f4af4fad89a179441e3f6dc9a549b86a2ffa5c740ed76b644810239b                                          27.7s
- => => resolve docker.io/library/eclipse-temurin:17-jdk@sha256:859dc576f4af4fad89a179441e3f6dc9a549b86a2ffa5c740ed76b644810239b                                           0.0s
- => => sha256:0b4a090763e7e549c6488fe430d461848f14e26d1afb615ae859b43a0de5883b 9.66kB / 9.66kB                                                                            0.0s
- => => sha256:6f5c5aa4e145204b113f983c003ff8ad6489394294ef95ec030bc94e3daded54 41.55MB / 41.55MB                                                                          6.6s
- => => sha256:859dc576f4af4fad89a179441e3f6dc9a549b86a2ffa5c740ed76b644810239b 7.23kB / 7.23kB                                                                            0.0s
- => => sha256:7383a9e8e67a003c0e32ccdee3e5352ec24ca9c3848080c3f108bddb0322139e 2.14kB / 2.14kB                                                                            0.0s
- => => sha256:1c24335ddd46023ff99bd665bd8ea6798464f7bbf501718edcf2eb4696e5f408 387B / 387B                                                                                0.4s
- => => sha256:1074d15b60c97f22a99cde76dc483f254de86c640a1ff14b4e25d6360fc1e675 24.10MB / 24.10MB                                                                          9.3s
- => => sha256:0179dfb07a7de839d91eb0e16cd63a01695ffc321d3f980741a9fa1eab961a84 145.91MB / 145.91MB                                                                       22.6s
- => => sha256:f2355d8d10e06f236ec5ba36f4f0bafd8aac2409348bfc007beb10966c5c063b 158B / 158B                                                                                7.0s
- => => extracting sha256:6f5c5aa4e145204b113f983c003ff8ad6489394294ef95ec030bc94e3daded54                                                                                10.0s
- => => sha256:a32c420591217dc7a625a084712f93306dad56d88f6154646e712a08453c9d6e 2.28kB / 2.28kB                                                                            7.4s
- => => extracting sha256:1c24335ddd46023ff99bd665bd8ea6798464f7bbf501718edcf2eb4696e5f408                                                                                 0.0s
- => => extracting sha256:1074d15b60c97f22a99cde76dc483f254de86c640a1ff14b4e25d6360fc1e675                                                                                 3.7s
- => => extracting sha256:0179dfb07a7de839d91eb0e16cd63a01695ffc321d3f980741a9fa1eab961a84                                                                                 4.5s
- => => extracting sha256:f2355d8d10e06f236ec5ba36f4f0bafd8aac2409348bfc007beb10966c5c063b                                                                                 0.0s
- => => extracting sha256:a32c420591217dc7a625a084712f93306dad56d88f6154646e712a08453c9d6e                                                                                 0.0s
- => [2/2] ADD target/spring-boot-docker.jar spring-boot-docker.jar                                                                                                        1.0s
- => exporting to image                                                                                                                                                    0.3s
- => => exporting layers                                                                                                                                                   0.2s
- => => writing image sha256:e7c2f6fa9f34b2c48cdc47221a9fe5ca40935e5021e2c26bd17d39a3fbf6b9ae                                                                              0.0s
- => => naming to docker.io/library/springboot-k8s-demo:1.0                                                                                                                0.0s
+- 🐳 Docker
+- ☸️ Minikube
+- 🛠️ kubectl
+- ☕ Java 17
+- 🌱 Spring Boot application with a Dockerfile
 
- 1 warning found (use docker --debug to expand):
- - ConsistentInstructionCasing: Command 'Add' should match the case of the command majority (uppercase) (line 3)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ docker images
-REPOSITORY                                TAG       IMAGE ID       CREATED              SIZE
-springboot-k8s-demo                       1.0       e7c2f6fa9f34   About a minute ago   469MB
-registry.k8s.io/kube-apiserver            v1.35.1   6f9eeb0cff98   4 months ago         89.8MB
-registry.k8s.io/kube-controller-manager   v1.35.1   8d7002962c48   4 months ago         75.8MB
-registry.k8s.io/kube-scheduler            v1.35.1   5f2a969bc7a4   4 months ago         51.7MB
-registry.k8s.io/kube-proxy                v1.35.1   6521110cdb01   4 months ago         70.4MB
-registry.k8s.io/etcd                      3.6.6-0   0a108f718956   7 months ago         62.5MB
-registry.k8s.io/coredns/coredns           v1.13.1   aa5e3ebc0dfe   8 months ago         78.1MB
-registry.k8s.io/pause                     3.10.1    cd073f4c5f6a   12 months ago        736kB
-gcr.io/k8s-minikube/storage-provisioner   v5        6e38f40d628d   5 years ago          31.5MB
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl create deployement springboot-k8s --image=springboot-k8s-demo:1.0 --port=8080
-error: unknown flag: --image
-See 'kubectl create --help' for usage.
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl create deployment springboot-k8s --image=springboot-k8s-demo:1.0 --port=8080
-deployment.apps/springboot-k8s created
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get deployment
-NAME             READY   UP-TO-DATE   AVAILABLE   AGE
-springboot-k8s   1/1     1            1           32s
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl describe  deployment springboot-k8s
-Name:                   springboot-k8s
-Namespace:              default
-CreationTimestamp:      Thu, 18 Jun 2026 01:18:58 +0530
-Labels:                 app=springboot-k8s
-Annotations:            deployment.kubernetes.io/revision: 1
-Selector:               app=springboot-k8s
-Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
-StrategyType:           RollingUpdate
-MinReadySeconds:        0
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Pod Template:
-  Labels:  app=springboot-k8s
-  Containers:
-   springboot-k8s-demo:
-    Image:         springboot-k8s-demo:1.0
-    Port:          8080/TCP
-    Host Port:     0/TCP
-    Environment:   <none>
-    Mounts:        <none>
-  Volumes:         <none>
-  Node-Selectors:  <none>
-  Tolerations:     <none>
-Conditions:
-  Type           Status  Reason
-  ----           ------  ------
-  Available      True    MinimumReplicasAvailable
-  Progressing    True    NewReplicaSetAvailable
-OldReplicaSets:  <none>
-NewReplicaSet:   springboot-k8s-d6fb8959f (1/1 replicas created)
-Events:
-  Type    Reason             Age   From                   Message
-  ----    ------             ----  ----                   -------
-  Normal  ScalingReplicaSet  89s   deployment-controller  Scaled up replica set springboot-k8s-d6fb8959f from 0 to 1
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get pods
-NAME                             READY   STATUS    RESTARTS   AGE
-springboot-k8s-d6fb8959f-mh6c8   1/1     Running   0          10m
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl logs springboot-k8s-d6fb8959f-mh6c8
+---
 
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
+## 🚀 1. Start Minikube
 
- :: Spring Boot ::               (v3.5.13)
+Start the Minikube cluster:
 
-2026-06-17T19:49:02.693Z  INFO 1 --- [docker-eample] [           main] c.docker_eample.DockerEampleApplication  : Starting DockerEampleApplication v0.0.1-SNAPSHOT using Java 17.0.19 with PID 1 (/spring-boot-docker.jar started by root in /)
-2026-06-17T19:49:02.708Z  INFO 1 --- [docker-eample] [           main] c.docker_eample.DockerEampleApplication  : No active profile set, falling back to 1 default profile: "default"
-2026-06-17T19:49:06.331Z  INFO 1 --- [docker-eample] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-06-17T19:49:06.374Z  INFO 1 --- [docker-eample] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-06-17T19:49:06.375Z  INFO 1 --- [docker-eample] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.53]
-2026-06-17T19:49:06.570Z  INFO 1 --- [docker-eample] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-06-17T19:49:06.578Z  INFO 1 --- [docker-eample] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3545 ms
-2026-06-17T19:49:08.121Z  INFO 1 --- [docker-eample] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2026-06-17T19:49:08.165Z  INFO 1 --- [docker-eample] [           main] c.docker_eample.DockerEampleApplication  : Started DockerEampleApplication in 7.475 seconds (process running for 8.421)
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get deployments
-NAME             READY   UP-TO-DATE   AVAILABLE   AGE
-springboot-k8s   1/1     1            1           13m
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl expose deployment springboot-k8s --type=NodePort
-service/springboot-k8s exposed
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get service
-NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          6h54m
-springboot-k8s   NodePort    10.110.164.36   <none>        8080:32023/TCP   24s
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minkube service springboot-k8s --url
-minkube: command not found
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube service springboot-k8s --url
-http://127.0.0.1:40353
-❗  Because you are using a Docker driver on linux, the terminal needs to be open to run it.
-^Ckrishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube dashboard
-🔌  Enabling dashboard ...
-    ▪ Using image docker.io/kubernetesui/dashboard:v2.7.0
-    ▪ Using image docker.io/kubernetesui/metrics-scraper:v1.0.8
-💡  Some dashboard features require the metrics-server addon. To enable all features please run:
+```bash
+minikube start
+```
 
-        minikube addons enable metrics-server
+Configure your shell to use Minikube's Docker daemon:
 
-🤔  Verifying dashboard health ...
-🚀  Launching proxy ...
-🤔  Verifying proxy health ...
-🎉  Opening http://127.0.0.1:39169/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ in your default browser...
-Opening in existing browser session.
-^C
+```bash
+eval $(minikube -p minikube docker-env)
+```
 
-=======================================================================================================================>
-Delete resources
-rishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl service
-error: unknown command "service" for "kubectl"
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get  service
-NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          7h5m
-springboot-k8s   NodePort    10.110.164.36   <none>        8080:32023/TCP   11m
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl delete springboot-k8s
-error: the server doesn't have a resource type "springboot-k8s"
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl delete service  springboot-k8s
-service "springboot-k8s" deleted from default namespace
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get deployment
-NAME             READY   UP-TO-DATE   AVAILABLE   AGE
-springboot-k8s   1/1     1            1           26m
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl delete deployment  springboot-k8s
-deployment.apps "springboot-k8s" deleted from default namespace
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get pods
-No resources found in default namespace.
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube stop
-✋  Stopping node "minikube"  ...
-🛑  Powering off "minikube" via SSH ...
-🛑  1 node stopped.
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ kubectl get nodes
-E0618 01:47:24.383753   24215 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
-E0618 01:47:24.384650   24215 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
-E0618 01:47:24.385769   24215 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
-E0618 01:47:24.386451   24215 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
-E0618 01:47:24.387666   24215 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
-The connection to the server localhost:8080 was refused - did you specify the right host or port?
-krishna-nand@savvydev:~/Desktop/docker-eample./docker-eample$ minikube delete
-🔥  Deleting "minikube" in docker ...
-🔥  Deleting container "minikube" ...
-🔥  Removing /home/krishna-nand/.minikube/machines/minikube ...
-💀  Removed all traces of the "minikube" cluster.
+---
 
+## 🏗️ 2. Build Docker Image
 
-======================using yml configuration===========================
+List available Docker images:
+
+```bash
+docker images
+```
+
+Build the Spring Boot Docker image:
+
+```bash
+docker build -t springboot-k8s-demo:1.0 .
+```
+
+Verify the image was created:
+
+```bash
+docker images
+```
+
+---
+
+## ☸️ 3. Create Kubernetes Deployment
+
+Create the deployment:
+
+```bash
+kubectl create deployment springboot-k8s \
+  --image=springboot-k8s-demo:1.0 \
+  --port=8080
+```
+
+Verify the deployment:
+
+```bash
+kubectl get deployments
+```
+
+View deployment details:
+
+```bash
+kubectl describe deployment springboot-k8s
+```
+
+---
+
+## 🔍 4. Verify Pods
+
+List running pods:
+
+```bash
+kubectl get pods
+```
+
+View application logs:
+
+```bash
+kubectl logs <pod-name>
+```
+
+Example:
+
+```bash
+kubectl logs springboot-k8s-d6fb8959f-mh6c8
+```
+
+---
+
+## 🌐 5. Expose the Application
+
+Expose the deployment using a NodePort service:
+
+```bash
+kubectl expose deployment springboot-k8s --type=NodePort
+```
+
+Verify the service:
+
+```bash
+kubectl get services
+```
+
+Get the application URL:
+
+```bash
+minikube service springboot-k8s --url
+```
+
+---
+
+## 📊 6. Open Kubernetes Dashboard
+
+Launch the Minikube dashboard:
+
+```bash
+minikube dashboard
+```
+
+Enable the metrics server for additional dashboard features:
+
+```bash
+minikube addons enable metrics-server
+```
+
+---
+
+## 🗑️ 7. Delete Resources
+
+Delete the service:
+
+```bash
+kubectl delete service springboot-k8s
+```
+
+Delete the deployment:
+
+```bash
+kubectl delete deployment springboot-k8s
+```
+
+Verify that all pods are removed:
+
+```bash
+kubectl get pods
+```
+
+---
+
+## 🛑 8. Stop and Delete Minikube
+
+Stop the Minikube cluster:
+
+```bash
+minikube stop
+```
+
+Delete the Minikube cluster:
+
+```bash
+minikube delete
+```
+
+---
+
+## 📄 9. Deploy Using YAML Configuration
+
+Apply the Kubernetes manifest:
+
+```bash
 kubectl apply -f k8s-service.yaml
+```
+
+Verify resources:
+
+```bash
+kubectl get deployments
+kubectl get services
+kubectl get pods
+```
+
+---
+
+## 🧰 Useful Commands
+
+Check cluster nodes:
+
+```bash
+kubectl get nodes
+```
+
+List deployments:
+
+```bash
+kubectl get deployments
+```
+
+List services:
+
+```bash
+kubectl get services
+```
+
+List pods:
+
+```bash
+kubectl get pods
+```
+
+Describe a pod:
+
+```bash
+kubectl describe pod <pod-name>
+```
+
+Describe a service:
+
+```bash
+kubectl describe service springboot-k8s
+```
+
+View pod logs:
+
+```bash
+kubectl logs <pod-name>
+```
+
+---
+
+## ✅ Workflow Summary
+
+```text
+🐳 Build Docker Image
+        ↓
+☸️ Create Deployment
+        ↓
+🔍 Verify Pods
+        ↓
+🌐 Expose Service
+        ↓
+🚀 Access Application
+        ↓
+📊 Monitor with Dashboard
+```
